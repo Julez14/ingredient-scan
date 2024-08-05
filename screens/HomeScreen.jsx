@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, FlatList, Image, Button } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image, Button, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import ScanCell from "../components/ScanCell";
+import { useLinkProps } from "@react-navigation/native";
 
-export default function HomeScreen() {
+export default function HomeScreen(props) {
   const [scan, setScan] = useState([
     { key: "1", name: "Sunscreen", brand: "Dove", time: "12 hours" },
     { key: "2", name: "Cleanser", brand: "Cerave", time: "7 months" }
@@ -16,7 +17,19 @@ export default function HomeScreen() {
       </View>
 
       {/* scanList */}
-      <FlatList style={styles.scanList} data={scan} renderItem={({ item }) => <ScanCell name={item.name} brand={item.brand} time={item.time} />} />
+      <FlatList
+        style={styles.scanList}
+        data={scan}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() =>
+              props.navigation.navigate("ScanInfo", { name: item.name, brand: item.brand, time: item.time })
+            }
+          >
+            <ScanCell name={item.name} brand={item.brand} time={item.time} />
+          </Pressable>
+        )}
+      />
 
       {/* scanButton */}
       <Button title="Scan" />
